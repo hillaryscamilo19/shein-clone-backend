@@ -13,6 +13,7 @@ app.use(cors())
 app.use(express.json());
 
 app.use('/api/productos', require('./routes/producto'));
+app.use('/api/addcarrito', require('./routes/carrito'));
  
 //definir rutas principal
     app.get('/',(req, res) => {

@@ -1,3 +1,4 @@
+
 const Producto = require("../models/products");
 
 exports.crearProducto = async (req, res) => {
@@ -68,28 +69,29 @@ exports.obtenerProductosByID = async (req, res) => {
   };
 
   exports.eliminarProductos = async (req, res) => {
-    const myID = req.params.id
-
     try {
-      let producto = await Producto.findById({_id: myID})
-  
-      if (!producto) {
-        res.status(404).json({ msg: "no existe un producto" });
+      try{
+        let producto = await Producto.findById(req.params.id);
+        if(!producto){
+          res.status(404).json({ msg: 'product not found'});
+        }
+        await Producto.findByIdAndRemove({_id: req.params.id})
+        console.log()
+        res.json({ msg: 'product removed successfully'});
+
       }
-
-      await Producto.findOneAndRemove({ _id: req.require.id })
-
-      producto.delete()
-      producto.save()
-      res.json({msg: 'Producto eliminado con exito'})
-
-      res.json(producto);
+      catch (error){
+        console.log(error)
+        body_error={
+          "Mistake in sight!":error
+        }
+        res.status(500).send(body_error);
+      }
 
     } catch (error) {
       console.log(error);
       res.status(500).send("Hubo un error");
     }
   };
-
 
 
