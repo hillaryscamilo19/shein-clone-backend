@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
 const ProductaddSchema = mongoose.Schema({
-    userId:{
+    userId: {
         type: String,
         require: true
     },
-    product:{
+    product: {
         type: String,
         require: true
     },
-    PriceId:{
+    PriceId: {
         type: Number,
         require: true
     },
-    ImgProduct:{
+    ImgProduct: {
         type: String,
         require: true
     },
