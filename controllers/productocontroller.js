@@ -1,4 +1,3 @@
-
 const Producto = require("../models/products");
 
 exports.crearProducto = async (req, res) => {
@@ -53,45 +52,39 @@ exports.actualizarProducto = async (req, res) => {
 };
 
 exports.obtenerProductosByID = async (req, res) => {
+  try {
+    let producto = await Producto.findById({ _id: req.params.id });
+
+    if (!producto) {
+      res.status(404).json({ msg: "no existe un producto" });
+    }
+
+    res.json(producto);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Hubo un error");
+  }
+};
+
+exports.eliminarProductos = async (req, res) => {
+  try {
     try {
-      let producto = await Producto.findById({_id: req.params.id});
-  
+      let producto = await Producto.findById(req.params.id);
       if (!producto) {
-        res.status(404).json({ msg: "no existe un producto" });
+        res.status(404).json({ msg: "product not found" });
       }
-
-      res.json(producto);
-
+      await Producto.findByIdAndRemove({ _id: req.params.id });
+      console.log();
+      res.json({ msg: "product removed successfully" });
     } catch (error) {
       console.log(error);
-      res.status(500).send("Hubo un error");
+      body_error = {
+        "Mistake in sight!": error,
+      };
+      res.status(500).send(body_error);
     }
-  };
-
-  exports.eliminarProductos = async (req, res) => {
-    try {
-      try{
-        let producto = await Producto.findById(req.params.id);
-        if(!producto){
-          res.status(404).json({ msg: 'product not found'});
-        }
-        await Producto.findByIdAndRemove({_id: req.params.id})
-        console.log()
-        res.json({ msg: 'product removed successfully'});
-
-      }
-      catch (error){
-        console.log(error)
-        body_error={
-          "Mistake in sight!":error
-        }
-        res.status(500).send(body_error);
-      }
-
-    } catch (error) {
-      console.log(error);
-      res.status(500).send("Hubo un error");
-    }
-  };
-
-
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Hubo un error");
+  }
+};
