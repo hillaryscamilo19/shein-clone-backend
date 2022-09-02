@@ -66,6 +66,23 @@ exports.obtenerProductosByID = async (req, res) => {
   }
 };
 
+exports.obtenerProduct = async (req, res) => {
+  try {
+    let producto = await Producto.find({
+      classification: req.params.classification,
+    });
+
+    if (!producto) {
+      res.status(404).json({ msg: "no existe un producto" });
+    }
+
+    res.json(producto);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Hubo un error");
+  }
+};
+
 exports.eliminarProductos = async (req, res) => {
   try {
     try {

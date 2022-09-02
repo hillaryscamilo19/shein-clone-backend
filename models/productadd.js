@@ -24,5 +24,14 @@ const ProductaddSchema = mongoose.Schema({
     type: String,
     require: true,
   },
+  quantity: {
+    type: Number,
+    require: true,
+  },
+  completed: {
+    type: Number,
+    require: true,
+  },
+ 
 });
 module.exports = mongoose.model("Productadd", ProductaddSchema);

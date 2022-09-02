@@ -19,6 +19,17 @@ const ProductoShema = mongoose.Schema({
   img: {
     type: String,
   },
+  quantity: {
+    type: Number,
+  },
+  completed: {
+    type: Number,
+    require: true,
+  },
+  classification: {
+    type: String,
+    require: true,
+  },
 });
 
 module.exports = mongoose.model("Producto", ProductoShema);
