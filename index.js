@@ -4,6 +4,7 @@ const cors = require("cors");
 
 //create services
 const app = express();
+const router = express.Router();
 
 //conectamos a la BD
 conectarDB();
@@ -14,6 +15,7 @@ app.use(express.json());
 
 app.use("/api/productos", require("./routes/producto"));
 app.use("/api/addcarrito", require("./routes/carrito"));
+app.use("/api/auth", require("./routes/Usuario"));
 
 //definir rutas principal
 app.get("/", (req, res) => {

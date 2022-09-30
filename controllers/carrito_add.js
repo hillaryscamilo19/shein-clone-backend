@@ -1,4 +1,5 @@
 const Productoadd = require("../models/productadd");
+
 exports.Addproduct = async (req, res) => {
   const nueba = {
     userId: req.body.id,
@@ -20,7 +21,6 @@ exports.Addproduct = async (req, res) => {
 };
 
 exports.eliminarProduct = async (req, res) => {
-  // try {
     try {
       try {
         let product = await Productoadd.findById(req.params.id);
@@ -28,7 +28,6 @@ exports.eliminarProduct = async (req, res) => {
           res.status(404).json({ msg: "product not found" });
         }
         await Productoadd.findByIdAndRemove({ _id: req.params.id });
-        console.log();
         res.json({ msg: "producto retirado con éxito" });
       } catch (error) {
         console.log(error);
@@ -52,7 +51,6 @@ exports.obtenerProduct = async (req, res) => {
     res.status(500).send("Hubo un error");
   }
 };
-
 
 exports.obtenerProductosByID = async (req, res) => {
   try {
