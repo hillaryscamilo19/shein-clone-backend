@@ -1,46 +1,49 @@
 const userModel = require("../models/User");
+const bcrypt = require("bcrypt");
 
 exports.register = async (req, res) => {
   try {
     const { email, password, name, lastName } = req.body;
-    const isUser = await userModel.findOne({email});
-    
-    if(isUser){
-      return res.status(409).send("USER_ALREADY_REGISTER")
+    const isUser = await userModel.findOne({ email });
+    const encyptPassword = await bcrypt.hash(password, 8);
+
+    if (isUser) {
+      return res.status(409).send("USER_ALREADY_REGISTER");
     }
-    //Creamos nuevo usuario.
+
     const auth = new userModel({
       email,
-      password,
+      password: encyptPassword,
       name,
-      lastName
+      lastName,
     });
+
+    // Creamos nuevo usuario.
     await auth.save();
     res.send(auth);
   } catch (error) {
+    console.log(error);
     res.status(500).send("hubo un error");
   }
 };
 
-exports.actualizarProducto = async (req, res) => {
+exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    let auth = await authUser.findById(req.params.id);
-
-    if (! auth) {
-      res.status(404).json({ msg: "no existe un producto" });
+    const user = await userModel.findOne({ email });
+    if(!user){
+      return res.status(409).send("User not found")
     }
-    auth.email = email;
-    auth.password =password;
-
-    auth = await  authUser.findOneAndUpdate(
-      { _id: req.params.id },
-      authUser,
-      { new: true }
-    );
-    res.json(producto);
+    //comparacion de password con el de la base de dato
+    const checkPassword = await bcrypt.compare(password, user.password);
+    if (!checkPassword) {
+      res.status(500).send("password incorrect");
+    }
+      res.send({
+        data: user,
+    })
   } catch (error) {
     console.log(error);
-    res.status(500).send("Hubo un error");
+    res.status(500).send("hubo un error");
   }
 };
