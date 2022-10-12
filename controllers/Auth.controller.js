@@ -37,11 +37,9 @@ exports.login = async (req, res) => {
     //comparacion de password con el de la base de dato
     const checkPassword = await bcrypt.compare(password, user.password);
     if (!checkPassword) {
-      res.status(500).send("password incorrect");
+      return res.status(500).send("password incorrect");
     }
-      res.send({
-        data: user,
-    })
+      res.send({data: user,})
   } catch (error) {
     console.log(error);
     res.status(500).send("hubo un error");
